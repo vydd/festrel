@@ -1,0 +1,4 @@
+tqdm
+requests
+py-trello
+bs4
