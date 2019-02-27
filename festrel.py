@@ -23,7 +23,7 @@ def extract_dates(movie_details):
     time_locs = [t.text for t in showings.find_all('p')]
     times = [t.split(time_split + ': ')[1].split(price_split)[0] for t in time_locs]
     prices = [t.split(price_split + ': ')[1].split('RSD')[0] + 'RSD' for t in time_locs]
-    places = [t.split('RSD')[1] for t in time_locs]
+    places = [t.replace('Ulaz slobodan', 'Ulaz slobodanRSD').split('RSD')[1] for t in time_locs]
     return [f'{pl}: {d}, {t} ({pr})' for d, t, pl, pr in zip(pretty_days, times, places, prices)]
 
 
