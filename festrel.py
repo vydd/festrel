@@ -13,9 +13,11 @@ def extract_dates(movie_details):
     if settings.language == 'en':
         time_split = 'Time'
         price_split = 'Price'
+        remark = 'Remark: '
     else:
         time_split = 'Vreme'
         price_split = 'Cena'
+        remark = 'Napomena: '
     showings = movie_details.find('div', {'class': 'product-projection'})
     dates = showings.find_all('div', {'class': 'date'})
     days = [find_day(d) for d in dates]
@@ -23,7 +25,7 @@ def extract_dates(movie_details):
     pretty_days = [m + ' ' + d for m, d in zip(months, days)]
     time_locs = [t.text for t in showings.find_all('p')]
     time_locs = [re.sub('Ulaz slobodan([^R])', 'Ulaz slobodanRSD\\1', x) for x in time_locs]
-    time_locs = [x.replace('Remark: ', price_split + ': ') for x in time_locs]
+    time_locs = [x.replace(remark, price_split + ': ') for x in time_locs]
     times = [t.split(time_split + ': ')[1].split(price_split)[0] for t in time_locs]
     prices = [t.split(price_split + ': ')[1].split('RSD')[0] + 'RSD' for t in time_locs]
     places = [t.replace('Ulaz slobodan', 'Ulaz slobodanRSD').split('RSD')[1] for t in time_locs]
